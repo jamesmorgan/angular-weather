@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html ng-app="weatherApp">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+
+	<div id="mainContent" ng-controller="MainContentController" ng-init="init()" ng-cloak>
+
+		<hr />
+
+		<div ng-show="currentGeoPosition == null">
+			Looking up Geo Location, please allow when your browser prompts you!
+		</div>
+			
+		<div ng-show="currentGeoPosition != null">
+			
+			<h5>Current GEO Location </h5>
+			latitude  : <span ng-bind="currentGeoPosition.latitude"></span> <br />
+			longitude :	<span ng-bind="currentGeoPosition.longitude"></span> <br />
+			<div ng-hide="currentGeoPosition.timestamp == ''">
+				timestamp : <span ng-bind="currentGeoPosition.timestamp"></span>
+			</div>
+			
+			<hr />
+			
+			<a href="#" ng-click="lookupWOEIDGeoPosition()">Get WOEID Geo Location</a>
+			| 
+			<a href="#" ng-click="getWeatherForWOEID()" ng-hide="currentWOEIDData == null">
+				Get Weather For WOEID
+			</a>
+
+			<div ng-show="currentWOEIDData != null">
+				<h5> WEOID Details </h5>
+				
+				<table>
+					<tr>
+						<td>Details</td>
+						<td>JSON Response</td>
+					</tr>
+					<tr>
+						<td>
+							woeid : {{ currentWOEIDData.ResultSet.Results[0].woeid }} <br />
+							woetype : {{ currentWOEIDData.ResultSet.Results[0].woetype}} <br />							
+							city : {{ currentWOEIDData.ResultSet.Results[0].city}} <br />
+							county : {{ currentWOEIDData.ResultSet.Results[0].county}} <br />
+							state : {{ currentWOEIDData.ResultSet.Results[0].state}} <br />
+							country : {{ currentWOEIDData.ResultSet.Results[0].country}} <br />
+							countrycode : {{ currentWOEIDData.ResultSet.Results[0].countrycode}} <br />
+						</td>
+						<td>
+							<pre> {{ currentWOEIDData | json}} </pre>	
+						</td>
+					</tr>
+				</table> 
+
+			</div>
+			
+		</div>
+		
+		
+		</div>
+	</div>
+	
+	
+	<!-- Angular Libs -->
+	<script src="libs/angular.js" type="text/javascript" ></script>
+
+	<!-- Application Files -->
+	<script src="app/app.js" type="text/javascript" ></script>
+	<script src="app/controllers.js" type="text/javascript" ></script>
+	<script src="app/directives.js" type="text/javascript" ></script>
+	<script src="app/services/browserGeoService.js" type="text/javascript" ></script>
+	<script src="app/services/yahooWeatherService.js" type="text/javascript" ></script>
+	
+</body>
+</html>
