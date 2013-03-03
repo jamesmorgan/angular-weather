@@ -2,20 +2,31 @@ app.controller('MainContentController',
 
 	function MainContentController($scope, $rootScope, $log, BrowserGeoService, YahooWeatherService) {
 		
- 		$scope.currentGeoPosition = null
-
- 		$scope.currentWOEIDData = null
+ 		$scope.currentGeoPosition = null;
+ 		$scope.currentWOEIDData = null;
+ 		$scope.currentWeatherForWoeid = null;
+ 		$scope.lastError = "";
  		
 		$scope.init = function() {
 			BrowserGeoService.getLocation();
+		}
+		
+		$scope.clearLookups = function(){
+	 		$scope.currentGeoPosition = null;
+	 		$scope.currentWOEIDData = null;
+	 		$scope.currentWeatherForWoeid = null;
+	 		$scope.lastError = "";
+	 		$scope.init();
 		}
  		
  		$scope.getWeatherForWOEID = function() {
  			YahooWeatherService.getWeatherForWOEID($scope.currentWOEIDData.ResultSet.Results[0].woeid,
   			function(data){
  					$log.info("Success : " + data);
+	 				$scope.currentWeatherForWoeid = data;
 	 			},
 	 			function(status){
+		 			$scope.currentWeatherForWoeid = null;
  					$log.info("Failure : " + status);
 	 			});
  		}
@@ -41,6 +52,7 @@ app.controller('MainContentController',
  	
 		$scope.$on("onBrowserGeoLocationError", function(e, data){
 			$log.info("onBrowserGeoLocationFound, error = " + data);
+			$scope.lastError = data;
 		});
 
 	}
