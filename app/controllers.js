@@ -6,12 +6,16 @@ app.controller('MainContentController',
  		$scope.currentWOEIDData = null;
  		$scope.currentWeatherForWoeid = null;
  		$scope.lastError = "";
- 		
+ 		$scope.showWoeidJson = false;
+		$scope.showForecastJson = false;
+		
 		$scope.init = function() {
 			BrowserGeoService.getLocation();
 		}
 		
 		$scope.clearLookups = function(){
+	 		$scope.showWoeidJson = false;
+			$scope.showForecastJson = false;
 	 		$scope.currentGeoPosition = null;
 	 		$scope.currentWOEIDData = null;
 	 		$scope.currentWeatherForWoeid = null;
