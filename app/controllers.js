@@ -1,10 +1,9 @@
 app.controller('MainContentController',
 
-	function MainContentController($scope, $rootScope, $log, BrowserGeoService, YahooWeatherService) {
+	function MainContentController($scope, $rootScope, $log, BrowserGeoService, MetwitWeatherService) {
 		
  		$scope.currentGeoPosition = null;
- 		$scope.currentWOEIDData = null;
- 		$scope.currentWeatherForWoeid = null;
+ 		$scope.currentWeather = null;
  		$scope.lastError = "";
  		$scope.showWoeidJson = false;
 		$scope.showForecastJson = false;
@@ -17,32 +16,19 @@ app.controller('MainContentController',
 	 		$scope.showWoeidJson = false;
 			$scope.showForecastJson = false;
 	 		$scope.currentGeoPosition = null;
-	 		$scope.currentWOEIDData = null;
-	 		$scope.currentWeatherForWoeid = null;
+	 		$scope.currentWeather = null;
 	 		$scope.lastError = "";
 	 		$scope.init();
 		}
  		
- 		$scope.getWeatherForWOEID = function() {
- 			YahooWeatherService.getWeatherForWOEID($scope.currentWOEIDData.ResultSet.Results[0].woeid,
+ 		$scope.getWeather = function() {
+ 			MetwitWeatherService.getWeather($scope.currentGeoPosition,
   			function(data){
  					$log.info("Success : " + data);
-	 				$scope.currentWeatherForWoeid = data;
+	 				$scope.currentWeather = data;
 	 			},
 	 			function(status){
-		 			$scope.currentWeatherForWoeid = null;
- 					$log.info("Failure : " + status);
-	 			});
- 		}
- 		
- 		$scope.lookupWOEIDGeoPosition = function() {
- 			YahooWeatherService.getWOEID($scope.currentGeoPosition, 
- 				function(data){
- 					$log.info("Success : " + data);
- 					$scope.currentWOEIDData = data;
-	 			},
-	 			function(status){
-		 			$scope.currentWOEIDData = null;
+		 			$scope.currentWeather = null;
  					$log.info("Failure : " + status);
 	 			});
  		}
